@@ -48,6 +48,9 @@ setup(
     install_requires=[
         # List of dependencies is moved to requirements.txt
     ],
+    setup_requires=[
+        "flake8"
+    ],
     tests_require=[
         # List of dependencies is moved to test-requirements.txt
     ],
