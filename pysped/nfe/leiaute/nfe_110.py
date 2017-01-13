@@ -41,7 +41,7 @@
 
 from __future__ import division, print_function, unicode_literals
 
-from pysped.xml_sped import (ABERTURA, NAMESPACE_NFE, Signature, TagCaracter,
+from pysped.xml_sped import (ABERTURA, NAMESPACE_NFE, TagCaracter,
                              TagData, TagDecimal, TagHora, TagInteiro, XMLNFe)
 from pysped.nfe.leiaute import ESQUEMA_ATUAL_VERSAO_1 as ESQUEMA_ATUAL
 import os
@@ -3904,7 +3904,6 @@ class NFe(XMLNFe):
     def __init__(self):
         super(NFe, self).__init__()
         self.infNFe = InfNFe()
-        self.Signature = Signature()
         self.caminho_esquema = os.path.join(DIRNAME, 'schema/', ESQUEMA_ATUAL + '/')
         self.arquivo_esquema = 'nfe_v1.10.xsd'
         self.chave = ''
@@ -3915,22 +3914,12 @@ class NFe(XMLNFe):
     def get_xml(self):
         xml = XMLNFe.get_xml(self)
         xml += ABERTURA
-        xml += '<NFe xmlns="http://www.portalfiscal.inf.br/nfe">'
-        xml += self.infNFe.xml
-
-        #
-        # Define a URI a ser assinada
-        #
-        self.Signature.URI = '#' + self.infNFe.Id.valor
-
-        xml += self.Signature.xml
         xml += '</NFe>'
         return xml
 
     def set_xml(self, arquivo):
         if self._le_xml(arquivo):
             self.infNFe.xml    = arquivo
-            self.Signature.xml = self._le_noh('//NFe/sig:Signature')
 
     xml = property(get_xml, set_xml)
 
